@@ -1,5 +1,7 @@
-let getIntegerNumber = function(from, to) {
-  let num = Math.random() * to;
+// Функция, возвращающая целое положительное число.
+
+const getIntegerNumber = function(from, to) {
+  const num = Math.random() * to;
   if (from >= 0 && from < to && num >= from) {
     return Math.round(num);
   }
@@ -8,10 +10,10 @@ let getIntegerNumber = function(from, to) {
 
 getIntegerNumber(1, 100);
 
+// Функция, возвращающая дробное положительное число с плавающей запятой.
 
-
-let getFractionalNumber = function(from, to, roundTo) {
-  let num = Math.random() * to;
+const getFractionalNumber = function(from, to, roundTo) {
+  const num = Math.random() * to;
   if (from >= 0 && from < to && num >= from) {
     return num.toFixed(roundTo);
   }
