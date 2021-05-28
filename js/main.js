@@ -1,23 +1,11 @@
-// Функция, возвращающая целое положительное число.
+// Функция, возвращающая рандомное положительное число.
 
-const getIntegerNumber = function(from, to) {
-  const num = Math.random() * to;
-  if (from >= 0 && from < to && num >= from) {
-    return Math.round(num);
+const getRandomNumber = function(from, to, roundTo = 0) {
+  const num = from + Math.random() * (to - from);
+  if (from >= 0 && from < to) {
+    return roundTo > 0 ? num.toFixed(roundTo) : Math.round(num);
   }
-  return 'Заданы неверные параметры или результат не соответствует заданным параметрам';
+  return 'Заданы неверные параметры';
 };
 
-getIntegerNumber(1, 100);
-
-// Функция, возвращающая дробное положительное число с плавающей запятой.
-
-const getFractionalNumber = function(from, to, roundTo) {
-  const num = Math.random() * to;
-  if (from >= 0 && from < to && num >= from) {
-    return num.toFixed(roundTo);
-  }
-  return 'Заданы неверные параметры или результат не соответствует заданным параметрам';
-};
-
-getFractionalNumber(1, 50, 3);
+getRandomNumber(0, 3, 2);
