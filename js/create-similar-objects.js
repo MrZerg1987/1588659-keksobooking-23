@@ -1,15 +1,5 @@
-import {USERS, TYPES, TIME, PHOTOS, FEATURES} from './data.js';
-
-// Функция, возвращающая рандомное положительное число.
-
-const getRandomNumber = (from, to, roundTo = 0) => {
-  const num = from + Math.random() * (to - from);
-  return roundTo > 0 ? num.toFixed(roundTo) : Math.round(num);
-};
-
-// Функция, возвращающая рандомный элемент массива
-
-const getRandomArrayElement = (elements) => elements[Math.round(Math.random() * (elements.length - 1))];
+import {USERS, TYPES, TIME, PHOTOS, FEATURES, OBJECT_COUNT} from './data.js';
+import {getRandomNumber, getRandomArrayElement} from './utils.js';
 
 const createObj = () => {
   const lat = getRandomNumber(35.65000, 35.70000, 5);
@@ -28,9 +18,9 @@ const createObj = () => {
       guests: getRandomNumber(1, 10),
       checkin: getRandomArrayElement(TIME),
       checkout: getRandomArrayElement(TIME),
-      features:  new Set (new Array(getRandomNumber(1, 6)).fill(null).map(() => getRandomArrayElement(FEATURES))),
+      features:  [...new Set(new Array(getRandomNumber(1, 6)).fill(null).map(() => getRandomArrayElement(FEATURES)))],
       description: 'Самое лучшее предложение по мнению пользователей нашего сайта!',
-      photos: new Set (new Array(getRandomNumber(1, 3)).fill(null).map(() => getRandomArrayElement(PHOTOS))),
+      photos: [...new Set(new Array(getRandomNumber(1, 3)).fill(null).map(() => getRandomArrayElement(PHOTOS)))],
     },
     location: {
       lat,
@@ -39,4 +29,6 @@ const createObj = () => {
   };
 };
 
-export {createObj};
+const createSimilarObjects = () => new Array(OBJECT_COUNT).fill(null).map(() => createObj());
+
+export {createSimilarObjects};
