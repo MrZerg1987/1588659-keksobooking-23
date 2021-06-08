@@ -3,4 +3,3 @@ import {createObj} from './util.js';
 
 const createSimilarObjects = () => new Array(OBJECT_COUNT).fill(null).map(() => createObj());
 createSimilarObjects();
-Домашнее задание №4. Генерация данных. Правки +
