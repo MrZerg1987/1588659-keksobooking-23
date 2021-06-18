@@ -32,3 +32,4 @@ const createObj = () => {
 const createSimilarObjects = () => new Array(OBJECT_COUNT).fill(null).map(() => createObj());
 
 export {createSimilarObjects};
+export {createObj};
