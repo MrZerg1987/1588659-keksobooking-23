@@ -12,7 +12,7 @@ const createObj = () => {
     offer: {
       title: 'Внимание! Горячее предложение! Успейте оформить заказ!',
       address: `${lat}, ${lng}`,
-      price: `$${getRandomNumber(100, 1000)}`,
+      price: `${getRandomNumber(100, 1000)}`,
       type: getRandomArrayElement(TYPES),
       rooms: getRandomNumber(1, 5),
       guests: getRandomNumber(1, 10),
@@ -32,4 +32,3 @@ const createObj = () => {
 const createSimilarObjects = () => new Array(OBJECT_COUNT).fill(null).map(() => createObj());
 
 export {createSimilarObjects};
-export {createObj};

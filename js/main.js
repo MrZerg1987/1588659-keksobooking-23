@@ -1,5 +1,4 @@
-import {createSimilarObjects} from './create-similar-objects.js';
-import {createNewCard} from './popup.js';
+import {mapCanvas, similarObjectsFragment} from './popup.js';
 
-createSimilarObjects();
-createNewCard();
+
+mapCanvas.appendChild(similarObjectsFragment.childNodes[0]);
