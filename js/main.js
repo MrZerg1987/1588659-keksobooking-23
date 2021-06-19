@@ -1,3 +1,4 @@
-import {createSimilarObjects} from './create-similar-objects.js';
+import {mapCanvas, similarObjectsFragment} from './popup.js';
 
-createSimilarObjects();
+
+mapCanvas.appendChild(similarObjectsFragment.childNodes[0]);
