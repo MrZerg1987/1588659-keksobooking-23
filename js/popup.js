@@ -41,8 +41,10 @@ similarObjects.forEach(({author, offer}) => {
 
   const checkinText = offer.checkin ? `Заезд после ${offer.checkin}` : '';
   const checkoutText = offer.checkout ? `выезд до ${offer.checkout}` : '';
-  const betweenText = `, `;
-  const timeText = checkinText && checkoutText ? `${checkinText}${betweenText}${checkoutText}` : checkinText ? `${checkinText}` :  checkoutText ? `${checkoutText}`: '';
+  const betweenText = ', ';
+  const timeFullText = checkinText && checkoutText ? `${checkinText}${betweenText}${checkoutText}` : '';
+  const timeFragmentText = checkinText || checkoutText ? `${checkinText}${checkoutText}` : '';
+  const timeText = timeFullText || timeFragmentText;
 
   popupPhotos.innerHTML = '';
   popupFeatures.innerHTML = '';
