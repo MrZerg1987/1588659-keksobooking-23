@@ -9,4 +9,9 @@ const getRandomNumber = (from, to, roundTo = 0) => {
 
 const getRandomArrayElement = (elements) => elements[Math.round(Math.random() * (elements.length - 1))];
 
-export {getRandomNumber, getRandomArrayElement};
+// Функция, проверяющая нажатую клавишу 'Esc'
+
+const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
+
+export {getRandomNumber, getRandomArrayElement, isEscEvent};
+
