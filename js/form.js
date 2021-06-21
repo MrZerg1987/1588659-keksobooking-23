@@ -96,8 +96,8 @@ titleInput.addEventListener('input', titleInputHandler);
 housingTypeSelect.addEventListener('change', housingTypeSelectHandler);
 priceInput.addEventListener('invalid', priceInputHandler);
 roomQuantitySelect.addEventListener('change', roomQuantitySelectHandler);
-timeinSelect.addEventListener('change', timeInSelectHandler);
-timeoutSelect.addEventListener('change', timeOutSelectHandler);
+timeInSelect.addEventListener('change', timeInSelectHandler);
+timeOutSelect.addEventListener('change', timeOutSelectHandler);
 
 // Активация и деактивация формы объявления
 
