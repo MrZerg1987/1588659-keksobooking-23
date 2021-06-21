@@ -7,30 +7,15 @@ const priceInput = document.querySelector('#price');
 const roomQuantitySelect = document.querySelector('#room_number');
 const guestQuantitySelect = document.querySelector('#capacity');
 const guestQuantityOption = document.querySelectorAll('#capacity option');
-const timeinSelect = document.querySelector('#timein');
-const timeoutSelect = document.querySelector('#timeout');
+const timeInSelect = document.querySelector('#timein');
+const timeOutSelect = document.querySelector('#timeout');
 
 const HOUSING_TYPES = {
-  'bungalow': {
-    min: '0',
-    placeholder: '0',
-  },
-  'flat': {
-    min: '1000',
-    placeholder: '1000',
-  },
-  'hotel': {
-    min: '3000',
-    placeholder: '3000',
-  },
-  'house': {
-    min: '5000',
-    placeholder: '5000',
-  },
-  'palace': {
-    min: '10000',
-    placeholder: '10000',
-  },
+  'bungalow': '0',
+  'flat': '1000',
+  'hotel': '3000',
+  'house': '5000',
+  'palace': '10000',
 };
 
 const RENT_ROOMS = {
@@ -70,6 +55,14 @@ const titleInputHandler = () => {
   titleInput.reportValidity();
 };
 
+const timeInSelectHandler = ({target}) => {
+  timeOutSelect.value = target.value;
+};
+
+const timeOutSelectHandler = ({target}) => {
+  timeInSelect.value = target.value;
+};
+
 const priceInputHandler = () => {
   if (priceInput.validity.rangeOverflow) {
     priceInput.setCustomValidity('Максимальное значение - 1 000 000');
@@ -81,8 +74,8 @@ const priceInputHandler = () => {
 };
 
 const housingTypeSelectHandler = ({target}) => {
-  priceInput.min = HOUSING_TYPES[target.value].min;
-  priceInput.placeholder = HOUSING_TYPES[target.value].placeholder;
+  priceInput.min = HOUSING_TYPES[target.value];
+  priceInput.placeholder = HOUSING_TYPES[target.value];
 };
 
 const roomQuantitySelectHandler = ({target}) => {
@@ -99,20 +92,12 @@ const roomQuantitySelectHandler = ({target}) => {
   guestQuantitySelect.value = RENT_ROOMS[inputValue].value;
 };
 
-const timeinSelectHandler = ({target}) => {
-  timeoutSelect.value = target.value;
-};
-
-const timeoutSelectHandler = ({target}) => {
-  timeinSelect.value = target.value;
-};
-
 titleInput.addEventListener('input', titleInputHandler);
 housingTypeSelect.addEventListener('change', housingTypeSelectHandler);
 priceInput.addEventListener('invalid', priceInputHandler);
 roomQuantitySelect.addEventListener('change', roomQuantitySelectHandler);
-timeinSelect.addEventListener('change', timeinSelectHandler);
-timeoutSelect.addEventListener('change', timeoutSelectHandler);
+timeinSelect.addEventListener('change', timeInSelectHandler);
+timeoutSelect.addEventListener('change', timeOutSelectHandler);
 
 // Активация и деактивация формы объявления
 
