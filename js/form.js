@@ -55,12 +55,12 @@ const titleInputHandler = () => {
   titleInput.reportValidity();
 };
 
-const timeInSelectHandler = ({target}) => {
-  timeOutSelect.value = target.value;
-};
-
 const timeOutSelectHandler = ({target}) => {
   timeInSelect.value = target.value;
+};
+
+const timeInSelectHandler = ({target}) => {
+  timeOutSelect.value = target.value;
 };
 
 const priceInputHandler = () => {
