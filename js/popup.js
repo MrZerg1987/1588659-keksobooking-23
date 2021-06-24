@@ -76,11 +76,11 @@ const onMapLoad = () => {
 };
 
 mapInteractive
-.on('load', onMapLoad)
-.setView({
-  lat: 35.6895,
-  lng: 139.69171,
-}, 12);
+  .on('load', onMapLoad)
+  .setView({
+    lat: 35.6895,
+    lng: 139.69171,
+  }, 12);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -128,11 +128,11 @@ createSimilarMarkerGroup().forEach(({lat, lng}) => {
   );
 
   marker.addTo(markerGroup)
-  .bindPopup(similarObjectsFragment.childNodes[0],
-    {
-      keepInView: true,
-    },
-  );
+    .bindPopup(similarObjectsFragment.childNodes[0],
+      {
+        keepInView: true,
+      },
+    );
   marker.on('moveend', (evt) => {
     addressInput.value = (evt.target.getLatLng());
   });
@@ -152,7 +152,7 @@ const mainPinMarker = L.marker(
 mainPinMarker
   .addTo(mapInteractive)
   .on('moveend', (evt) => {
-  addressInput.value = (evt.target.getLatLng());
-});
+    addressInput.value = (evt.target.getLatLng());
+  });
 
 export {mapCanvas, similarObjectsFragment};

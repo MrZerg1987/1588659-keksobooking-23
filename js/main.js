@@ -1,5 +1,5 @@
 import {similarObjectsFragment} from './popup.js';
 
-// mapCanvas.appendChild(similarObjectsFragment.childNodes[0]);
+similarObjectsFragment.childNodes[0];
 
 
