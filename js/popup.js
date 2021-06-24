@@ -1,4 +1,6 @@
 import {createSimilarObjects} from './create-similar-objects.js';
+import {setDeactivatePageState, setActivatePageState, addressInput} from './form.js';
+import {getRandomNumber} from './utils.js';
 
 const HOUSING_TYPES = {
   'flat': 'Квартира',
@@ -9,6 +11,7 @@ const HOUSING_TYPES = {
 };
 
 const mapCanvas = document.querySelector('#map-canvas');
+const mapInteractive = L.map('map-canvas');
 const popupTemplate = document.querySelector('#card').content.querySelector('.popup');
 const similarObjectsFragment = document.createDocumentFragment();
 const similarObjects = createSimilarObjects();
@@ -62,6 +65,94 @@ similarObjects.forEach(({author, offer}) => {
   author.avatar ? popupAvatar.src = author.avatar : popupAvatar.remove();
 
   similarObjectsFragment.appendChild(element);
+});
+
+// Добавление интерактивной карты на страницу
+
+setDeactivatePageState();
+
+const onMapLoad = () => {
+  setActivatePageState();
+};
+
+mapInteractive
+.on('load', onMapLoad)
+.setView({
+  lat: 35.6895,
+  lng: 139.69171,
+}, 12);
+
+L.tileLayer(
+  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  },
+).addTo(mapInteractive);
+
+const mainPinIcon = L.icon({
+  iconUrl: '../img/main-pin.svg',
+  iconSize: [52, 52],
+  iconAnchor: [26, 52],
+});
+
+const createLocation = () => {
+  const lat = getRandomNumber(35.65000, 35.70000, 5);
+  const lng = getRandomNumber(139.70000, 139.80000, 5);
+
+  return {
+    lat,
+    lng,
+  };
+};
+
+const createSimilarMarkerGroup = () => new Array(10).fill(null).map(() => createLocation());
+
+const markerGroup = L.layerGroup().addTo(mapInteractive);
+
+createSimilarMarkerGroup().forEach(({lat, lng}) => {
+  const icon = L.icon({
+    iconUrl: '../img/pin.svg',
+    iconSize: [40, 40],
+    iconAnchor: [20, 40],
+  });
+
+  const marker = L.marker(
+    {
+      lat,
+      lng,
+    },
+    {
+      draggable: true,
+      icon,
+    },
+  );
+
+  marker.addTo(markerGroup)
+  .bindPopup(similarObjectsFragment.childNodes[0],
+    {
+      keepInView: true,
+    },
+  );
+  marker.on('moveend', (evt) => {
+    addressInput.value = (evt.target.getLatLng());
+  });
+});
+
+const mainPinMarker = L.marker(
+  {
+    lat: 35.6895,
+    lng: 139.69171,
+  },
+  {
+    draggable: true,
+    icon: mainPinIcon,
+  },
+);
+
+mainPinMarker
+  .addTo(mapInteractive)
+  .on('moveend', (evt) => {
+  addressInput.value = (evt.target.getLatLng());
 });
 
 export {mapCanvas, similarObjectsFragment};

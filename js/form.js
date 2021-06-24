@@ -7,6 +7,7 @@ const priceInput = document.querySelector('#price');
 const roomQuantitySelect = document.querySelector('#room_number');
 const guestQuantitySelect = document.querySelector('#capacity');
 const guestQuantityOption = document.querySelectorAll('#capacity option');
+const addressInput = document.querySelector('#address');
 const timeInSelect = document.querySelector('#timein');
 const timeOutSelect = document.querySelector('#timeout');
 
@@ -121,10 +122,11 @@ const setDeactivatePageState = () => {
 };
 
 const setActivatePageState = () => {
+  // if ()
   forms.forEach((form) => {
     form.classList.remove('disabled');
     setElementEnableState();
   });
 };
 
-export {setDeactivatePageState, setActivatePageState};
+export {setDeactivatePageState, setActivatePageState, addressInput};
