@@ -1,6 +1,4 @@
 import {createSimilarObjects} from './create-similar-objects.js';
-import {setDeactivatePageState, setActivatePageState, addressInput} from './form.js';
-import {getRandomNumber} from './utils.js';
 
 const HOUSING_TYPES = {
   'flat': 'Квартира',
@@ -10,149 +8,121 @@ const HOUSING_TYPES = {
   'hotel': 'Отель',
 };
 
-const mapCanvas = document.querySelector('#map-canvas');
-const mapInteractive = L.map('map-canvas');
 const popupTemplate = document.querySelector('#card').content.querySelector('.popup');
-const similarObjectsFragment = document.createDocumentFragment();
 const similarObjects = createSimilarObjects();
 
-const createFeatureMarkup = (el) => `<li class="popup__feature popup__feature--${el}"></li>`;
-
-const createImgMarkup = (src) => `<img src="${src}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`;
-
-const renderElements = (container, elements, fn) => {
-  elements.forEach((el) => {
-    container.insertAdjacentHTML('beforeend', fn(el));
-  });
+const createFeatureMarkup = (elements) => {
+  const markup =  elements.map((el) => `<li class="popup__feature popup__feature--${el}"></li>`).join('\n');
+  return markup;
 };
 
-similarObjects.forEach(({author, offer}) => {
-  const element = popupTemplate.cloneNode(true);
-  const popupTitle = element.querySelector('.popup__title');
-  const popupAddress = element.querySelector('.popup__text--address');
-  const popupPrice = element.querySelector('.popup__text--price');
-  const popupType = element.querySelector('.popup__type');
-  const popupCapacity = element.querySelector('.popup__text--capacity');
-  const popupTime = element.querySelector('.popup__text--time');
-  const popupFeatures = element.querySelector('.popup__features');
-  const popupDescription = element.querySelector('.popup__description');
-  const popupPhotos = element.querySelector('.popup__photos');
-  const popupAvatar = element.querySelector('.popup__avatar');
-  const roomsText = offer.rooms ? `${offer.rooms} комнаты ` : '';
-  const guestsText = offer.guests ? `для ${offer.guests} гостей` : '';
-  const capacityText = `${roomsText}${guestsText}`;
+const createImgMarkup = (elements) => {
+  const markup =  elements.map((el) => `<img src="${el}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`).join('\n');
+  return markup;
+};
 
-  const checkinText = offer.checkin ? `Заезд после ${offer.checkin}` : '';
-  const checkoutText = offer.checkout ? `выезд до ${offer.checkout}` : '';
+const renderElements = (elements, container, fn) => {
+  container.insertAdjacentHTML('beforeend', fn(elements));
+};
+
+const addElementSrc = (value, element, selector) => {
+  const currentElement = element.querySelector(selector);
+  if(!value) {
+    currentElement.remove();
+    return;
+  }
+  currentElement.src = value;
+};
+
+const addElementTextContent = (value, element, selector) => {
+  const currentElement = element.querySelector(selector);
+  if(!value) {
+    currentElement.remove();
+    return;
+  }
+  currentElement.textContent = value;
+};
+
+const addElementAdditionalTextContent = (value, additionalValue, element, selector) => {
+  const currentElement = element.querySelector(selector);
+  if(!value) {
+    currentElement.remove();
+    return;
+  }
+  currentElement.textContent = `${value} ${additionalValue}`;
+};
+
+const addListElementContent = (value, element, selector, fn) => {
+  const currentElement = element.querySelector(selector);
+  if(!value && value.length) {
+    currentElement.remove();
+    return;
+  }
+  currentElement.innerHTML = '';
+  renderElements(value, currentElement, fn);
+};
+
+const addTimeElementTextContent = (valueIn, valueOut, element, selector) => {
+  const currentElement = element.querySelector(selector);
+  const checkInText = valueIn ? `Заезд после ${valueIn}` : '';
+  const checkOutText = valueOut ? `выезд до ${valueOut}` : '';
   const betweenText = ', ';
-  const timeFullText = checkinText && checkoutText ? `${checkinText}${betweenText}${checkoutText}` : '';
-  const timeFragmentText = checkinText || checkoutText ? `${checkinText}${checkoutText}` : '';
+  const timeFullText = checkInText && checkOutText ? `${checkInText}${betweenText}${checkOutText}` : '';
+  const timeFragmentText = checkInText || checkOutText ? `${checkInText}${checkOutText}` : '';
   const timeText = timeFullText || timeFragmentText;
 
-  popupPhotos.innerHTML = '';
-  popupFeatures.innerHTML = '';
-
-  offer.title ? popupTitle.textContent = offer.title : popupTitle.remove();
-  offer.address ? popupAddress.textContent = offer.address : popupAddress.remove();
-  offer.price ? popupPrice.textContent = `${offer.price} ₽/ночь` : popupPrice.remove();
-  offer.type ? popupType.textContent = HOUSING_TYPES[offer.type] : popupType.remove();
-  capacityText ? popupCapacity.textContent = capacityText : popupCapacity.remove();
-  timeText ? popupTime.textContent = timeText : popupTime.remove();
-
-  offer.features && offer.features.length ? renderElements(popupFeatures, offer.features, createFeatureMarkup) : popupFeatures.remove();
-  offer.description ? popupDescription.textContent = offer.description : popupDescription.remove();
-  offer.photos && offer.photos.length ? renderElements(popupPhotos, offer.photos, createImgMarkup) : popupPhotos.remove();
-  author.avatar ? popupAvatar.src = author.avatar : popupAvatar.remove();
-
-  similarObjectsFragment.appendChild(element);
-});
-
-// Добавление интерактивной карты на страницу
-
-setDeactivatePageState();
-
-const onMapLoad = () => {
-  setActivatePageState();
+  if(!timeText) {
+    currentElement.remove();
+    return;
+  }
+  currentElement.innerHTML = '';
+  currentElement.textContent = timeText;
 };
 
-mapInteractive
-  .on('load', onMapLoad)
-  .setView({
-    lat: 35.6895,
-    lng: 139.69171,
-  }, 12);
+const addCapacityElementTextContent = (rooms, guests, element, selector) => {
+  const currentElement = element.querySelector(selector);
+  const roomsText = rooms ? `${rooms} комнаты ` : '';
+  const guestsText = guests ? `для ${guests} гостей` : '';
+  const capacityText = `${roomsText}${guestsText}`;
 
-L.tileLayer(
-  'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-  },
-).addTo(mapInteractive);
-
-const mainPinIcon = L.icon({
-  iconUrl: '../img/main-pin.svg',
-  iconSize: [52, 52],
-  iconAnchor: [26, 52],
-});
-
-const createLocation = () => {
-  const lat = getRandomNumber(35.65000, 35.70000, 5);
-  const lng = getRandomNumber(139.70000, 139.80000, 5);
-
-  return {
-    lat,
-    lng,
-  };
+  if(!capacityText) {
+    currentElement.remove();
+    return;
+  }
+  currentElement.innerHTML = '';
+  currentElement.textContent = capacityText;
 };
 
-const createSimilarMarkerGroup = () => new Array(10).fill(null).map(() => createLocation());
+const addTypeElementTextContent = (value, element, selector) => {
+  const currentElement = element.querySelector(selector);
+  if(!value || !HOUSING_TYPES[value]) {
+    currentElement.remove();
+    return;
+  }
+  currentElement.textContent = HOUSING_TYPES[value];
+};
 
-const markerGroup = L.layerGroup().addTo(mapInteractive);
+const createSimilarObjectsFragment = () => {
+  const similarObjectsFragment = document.createDocumentFragment();
 
-createSimilarMarkerGroup().forEach(({lat, lng}) => {
-  const icon = L.icon({
-    iconUrl: '../img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
+  similarObjects.forEach(({author, offer}) => {
+    const advertElement = popupTemplate.cloneNode(true);
+
+    addElementTextContent(offer.title, advertElement, '.popup__title');
+    addElementTextContent(offer.address, advertElement, '.popup__text--address');
+    addElementAdditionalTextContent(offer.price, '₽/ночь', advertElement, '.popup__text--price');
+    addTypeElementTextContent(offer.type, advertElement, '.popup__type');
+    addCapacityElementTextContent(offer.rooms, offer.guests, advertElement, '.popup__text--capacity');
+    addTimeElementTextContent(offer.checkIn, offer.checkOut, advertElement, '.popup__text--time');
+    addListElementContent(offer.features, advertElement, '.popup__features', createFeatureMarkup);
+    addElementTextContent(offer.description, advertElement, '.popup__description');
+    addListElementContent(offer.photos, advertElement, '.popup__photos', createImgMarkup);
+    addElementSrc(author.avatar, advertElement, '.popup__avatar');
+
+    similarObjectsFragment.appendChild(advertElement);
   });
 
-  const marker = L.marker(
-    {
-      lat,
-      lng,
-    },
-    {
-      draggable: true,
-      icon,
-    },
-  );
+  return similarObjectsFragment.childNodes[0];
+};
 
-  marker.addTo(markerGroup)
-    .bindPopup(similarObjectsFragment.childNodes[0],
-      {
-        keepInView: true,
-      },
-    );
-  marker.on('moveend', (evt) => {
-    addressInput.value = (evt.target.getLatLng());
-  });
-});
-
-const mainPinMarker = L.marker(
-  {
-    lat: 35.6895,
-    lng: 139.69171,
-  },
-  {
-    draggable: true,
-    icon: mainPinIcon,
-  },
-);
-
-mainPinMarker
-  .addTo(mapInteractive)
-  .on('moveend', (evt) => {
-    addressInput.value = (evt.target.getLatLng());
-  });
-
-export {mapCanvas, similarObjectsFragment};
+export {createSimilarObjectsFragment};

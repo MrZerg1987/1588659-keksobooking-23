@@ -1,6 +1,3 @@
-const forms = document.querySelectorAll('form');
-const elementsForm = document.querySelectorAll('form input, select, button, textarea');
-
 const titleInput = document.querySelector('#title');
 const housingTypeSelect = document.querySelector('#type');
 const priceInput = document.querySelector('#price');
@@ -10,6 +7,8 @@ const guestQuantityOption = document.querySelectorAll('#capacity option');
 const addressInput = document.querySelector('#address');
 const timeInSelect = document.querySelector('#timein');
 const timeOutSelect = document.querySelector('#timeout');
+
+const setAddressInput = () => addressInput;
 
 const HOUSING_TYPES = {
   'bungalow': '0',
@@ -41,8 +40,6 @@ const RENT_ROOMS = {
     items: [3, 2, 1, 0],
   },
 };
-
-// Валидация формs объявления
 
 const titleInputHandler = () => {
   const valueLength = titleInput.value.length;
@@ -100,33 +97,4 @@ roomQuantitySelect.addEventListener('change', roomQuantitySelectHandler);
 timeInSelect.addEventListener('change', timeInSelectHandler);
 timeOutSelect.addEventListener('change', timeOutSelectHandler);
 
-// Активация и деактивация формы объявления
-
-const setElementDisableState = () => {
-  elementsForm.forEach((item) => {
-    item.disabled = true;
-  });
-};
-
-const setElementEnableState = () => {
-  elementsForm.forEach((item) => {
-    item.disabled = false;
-  });
-};
-
-const setDeactivatePageState = () => {
-  forms.forEach((form) => {
-    form.classList.add('disabled');
-    setElementDisableState();
-  });
-};
-
-const setActivatePageState = () => {
-  // if ()
-  forms.forEach((form) => {
-    form.classList.remove('disabled');
-    setElementEnableState();
-  });
-};
-
-export {setDeactivatePageState, setActivatePageState, addressInput};
+export {setAddressInput};

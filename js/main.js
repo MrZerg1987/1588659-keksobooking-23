@@ -1,5 +1,3 @@
-import {similarObjectsFragment} from './popup.js';
+import {onMapLoad} from './map.js';
 
-similarObjectsFragment.childNodes[0];
-
-
+onMapLoad();
