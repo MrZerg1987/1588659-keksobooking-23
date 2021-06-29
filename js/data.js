@@ -38,7 +38,6 @@ const FEATURES = [
   'conditioner',
 ];
 
-
 const OBJECT_COUNT = 10;
 
 export {USERS, TYPES, TIME, PHOTOS, FEATURES, OBJECT_COUNT};

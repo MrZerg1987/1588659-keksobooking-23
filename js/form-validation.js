@@ -4,11 +4,8 @@ const priceInput = document.querySelector('#price');
 const roomQuantitySelect = document.querySelector('#room_number');
 const guestQuantitySelect = document.querySelector('#capacity');
 const guestQuantityOption = document.querySelectorAll('#capacity option');
-const addressInput = document.querySelector('#address');
 const timeInSelect = document.querySelector('#timein');
 const timeOutSelect = document.querySelector('#timeout');
-
-const setAddressInput = () => addressInput;
 
 const HOUSING_TYPES = {
   'bungalow': '0',
@@ -41,16 +38,15 @@ const RENT_ROOMS = {
   },
 };
 
-const titleInputHandler = () => {
-  const valueLength = titleInput.value.length;
-  if (valueLength < titleInput.minLength) {
-    titleInput.setCustomValidity(`Ещё ${titleInput.minLength - valueLength } симв.`);
-  } else if (valueLength > titleInput.maxLength) {
-    titleInput.setCustomValidity(`Удалите лишние ${valueLength - titleInput.maxLength} симв.`);
+const titleInputHandler = ({target}) => {
+  if (target.value.length < target.minLength) {
+    target.setCustomValidity(`Ещё ${target.minLength - target.value.length } симв.`);
+  } else if (target.value.length > target.maxLength) {
+    target.setCustomValidity(`Удалите лишние ${target.value.length - target.maxLength} симв.`);
   } else {
-    titleInput.setCustomValidity('');
+    target.setCustomValidity('');
   }
-  titleInput.reportValidity();
+  target.reportValidity();
 };
 
 const timeOutSelectHandler = ({target}) => {
@@ -61,40 +57,54 @@ const timeInSelectHandler = ({target}) => {
   timeOutSelect.value = target.value;
 };
 
-const priceInputHandler = () => {
-  if (priceInput.validity.rangeOverflow) {
-    priceInput.setCustomValidity('Максимальное значение - 1 000 000');
-  } else if (titleInput.validity.valueMissing) {
-    priceInput.setCustomValidity('Обязательное поле');
+const priceInputHandler = ({target}) => {
+  if (target.validity.rangeOverflow) {
+    target.setCustomValidity('Максимальное значение - 1 000 000');
+  } else if (target.validity.valueMissing) {
+    target.setCustomValidity('Обязательное поле');
   } else {
-    priceInput.setCustomValidity('');
+    target.setCustomValidity('');
   }
+  target.reportValidity();
+};
+
+const changePriceInputState = (el) => {
+  priceInput.min = HOUSING_TYPES[el.value];
+  priceInput.placeholder = HOUSING_TYPES[el.value];
 };
 
 const housingTypeSelectHandler = ({target}) => {
-  priceInput.min = HOUSING_TYPES[target.value];
-  priceInput.placeholder = HOUSING_TYPES[target.value];
+  changePriceInputState(target);
+  priceInput.setCustomValidity('Изменился диапазон допустимых цен');
+  priceInput.reportValidity();
 };
 
-const roomQuantitySelectHandler = ({target}) => {
-  let inputValue = target.value;
-  if(!RENT_ROOMS[inputValue]) {
-    inputValue = 'default';
+const changeRoomQuantityInputState = (el) => {
+  if(!RENT_ROOMS[el.value]) {
+    el.value = 'default';
   }
   guestQuantityOption.forEach((option) => {
     option.disabled = true;
   });
-  RENT_ROOMS[inputValue].items.forEach((item) => {
+  RENT_ROOMS[el.value].items.forEach((item) => {
     guestQuantityOption[item].disabled = false;
   });
-  guestQuantitySelect.value = RENT_ROOMS[inputValue].value;
+  guestQuantitySelect.value = RENT_ROOMS[el.value].value;
 };
 
-titleInput.addEventListener('input', titleInputHandler);
-housingTypeSelect.addEventListener('change', housingTypeSelectHandler);
-priceInput.addEventListener('invalid', priceInputHandler);
-roomQuantitySelect.addEventListener('change', roomQuantitySelectHandler);
-timeInSelect.addEventListener('change', timeInSelectHandler);
-timeOutSelect.addEventListener('change', timeOutSelectHandler);
+const roomQuantitySelectHandler = ({target}) => {
+  changeRoomQuantityInputState(target);
+  guestQuantitySelect.setCustomValidity('Изменились варианты размещения гостей');
+  guestQuantitySelect.reportValidity();
+};
 
-export {setAddressInput};
+export const initFormValidation = () => {
+  changePriceInputState(housingTypeSelect);
+  changeRoomQuantityInputState(roomQuantitySelect);
+  titleInput.addEventListener('input', titleInputHandler);
+  housingTypeSelect.addEventListener('change', housingTypeSelectHandler);
+  priceInput.addEventListener('input', priceInputHandler);
+  roomQuantitySelect.addEventListener('change', roomQuantitySelectHandler);
+  timeInSelect.addEventListener('change', timeInSelectHandler);
+  timeOutSelect.addEventListener('change', timeOutSelectHandler);
+};
