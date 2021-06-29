@@ -1,7 +1,7 @@
-import {mapCanvas, similarObjectsFragment} from './popup.js';
-import {setDeactivatePageState, setActivatePageState} from './form.js';
+import {setDeactivatePageState} from './form-activation.js';
+import {initMap} from './map.js';
+import {initFormValidation} from './form-validation.js';
 
-mapCanvas.appendChild(similarObjectsFragment.childNodes[0]);
 setDeactivatePageState();
-setActivatePageState();
-
+initMap();
+initFormValidation();
