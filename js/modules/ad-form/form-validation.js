@@ -49,12 +49,24 @@ const titleInputHandler = ({target}) => {
   target.reportValidity();
 };
 
+const changeTimeOutSelect = (el) => {
+  timeInSelect.value = el.value;
+};
+
 const timeOutSelectHandler = ({target}) => {
-  timeInSelect.value = target.value;
+  changeTimeOutSelect(target);
+  timeInSelect.setCustomValidity('Изменилось время заезда');
+  timeInSelect.reportValidity();
+};
+
+const changeTimeInSelect = (el) => {
+  timeOutSelect.value = el.value;
 };
 
 const timeInSelectHandler = ({target}) => {
-  timeOutSelect.value = target.value;
+  changeTimeInSelect(target);
+  timeOutSelect.setCustomValidity('Изменилось время выезда');
+  timeOutSelect.reportValidity();
 };
 
 const priceInputHandler = ({target}) => {

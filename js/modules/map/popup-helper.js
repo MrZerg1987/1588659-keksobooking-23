@@ -6,10 +6,6 @@ const HOUSING_TYPES = {
   'hotel': 'Отель',
 };
 
-export const createFeatureMarkup = (elements) => elements.map((el) => `<li class="popup__feature popup__feature--${el}"></li>`).join('\n');
-
-export const createImgMarkup = (elements) => elements.map((el) => `<img src="${el}" class="popup__photo" width="45" height="40" alt="Фотография жилья">`).join('\n');
-
 export const renderElements = (elements, container, fn) => {
   container.insertAdjacentHTML('beforeend', fn(elements));
 };
@@ -40,7 +36,7 @@ export const addElementAdditionalTextContent = (value, additionalValue, element,
 
 export const addListElementContent = (value, element, selector, fn) => {
   const currentElement = element.querySelector(selector);
-  if(!value && value.length) {
+  if(!value || !value.length) {
     currentElement.remove();
     return;
   }
