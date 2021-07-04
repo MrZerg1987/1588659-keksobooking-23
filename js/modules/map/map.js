@@ -1,14 +1,28 @@
-import {setActivatePageState} from './form-activation.js';
 import {createSimilarObjectsFragment} from './popup.js';
-import {createSimilarObjects} from './create-similar-objects.js';
-const addressInput = document.querySelector('#address');
-const similarObjects = createSimilarObjects();
-const mapInteractive = L.map('map-canvas');
+import {getData} from '../api/api-service.js';
+import {onGetSuccess} from '../api-callbacks/on-get-success.js';
+import {onGetError} from '../api-callbacks/on-error-action.js';
+import {activateAdForm} from '../ad-form/activate-ad-form.js';
 
-const addMarkersGroup = (arr) => {
+const ADVERT_COUNTER = 10;
+const CITY_CENTER = {
+  lat: 35.6895,
+  lng: 139.69171,
+};
+
+const addressInput = document.querySelector('#address');
+const mapInteractive = L.map('map-canvas');
+let mainPinMarker;
+
+export const setPinMarkerStartState = () => {
+  mainPinMarker.setLatLng(CITY_CENTER);
+  mapInteractive.setView(CITY_CENTER, 12);
+};
+
+export const addMarkersGroup = (arr) => {
   const markups = createSimilarObjectsFragment(arr);
   const markerGroup = L.layerGroup().addTo(mapInteractive);
-  arr.forEach((el, index) => {
+  arr.slice(0, ADVERT_COUNTER).forEach((el, index) => {
     const lat = el.location.lat;
     const lng = el.location.lng;
     const icon = L.icon({
@@ -34,14 +48,11 @@ const addMarkersGroup = (arr) => {
 };
 
 export const initMap = () => {
-  mapInteractive.on('load', setActivatePageState)
-    .setView(
-      {
-        lat: 35.6895,
-        lng: 139.69171,
-      },
-      12,
-    );
+  mapInteractive.on('load', () => {
+    activateAdForm();
+    getData(onGetSuccess, onGetError);
+  })
+    .setView(CITY_CENTER, 12);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -53,21 +64,17 @@ export const initMap = () => {
     iconAnchor: [26, 52],
   });
 
-  const mainPinMarker = L.marker(
-    {
-      lat: 35.6895,
-      lng: 139.69171,
-    },
+  mainPinMarker = L.marker(
+    CITY_CENTER,
     {
       draggable: true,
       icon: mainPinIcon,
     },
   );
 
-  addressInput.value = `Координаты объекта: ${mainPinMarker.getLatLng().lat.toFixed(5)}, ${mainPinMarker.getLatLng().lng.toFixed(5)}`;
+  addressInput.value = `LatLng(${mainPinMarker.getLatLng().lat.toFixed(5)}, ${mainPinMarker.getLatLng().lng.toFixed(5)})`;
 
   mainPinMarker.addTo(mapInteractive).on('move', () => {
-    addressInput.value = `Координаты объекта: ${mainPinMarker.getLatLng().lat.toFixed(5)}, ${mainPinMarker.getLatLng().lng.toFixed(5)}`;
+    addressInput.value = `LatLng(${mainPinMarker.getLatLng().lat.toFixed(5)}, ${mainPinMarker.getLatLng().lng.toFixed(5)})`;
   });
-  addMarkersGroup(similarObjects);
 };
