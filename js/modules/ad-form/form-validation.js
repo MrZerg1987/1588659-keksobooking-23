@@ -7,7 +7,7 @@ const guestQuantityOption = document.querySelectorAll('#capacity option');
 const timeInSelect = document.querySelector('#timein');
 const timeOutSelect = document.querySelector('#timeout');
 
-const HousingTypes = {
+const housingTypes = {
   'bungalow': '0',
   'flat': '1000',
   'hotel': '3000',
@@ -15,7 +15,7 @@ const HousingTypes = {
   'palace': '10000',
 };
 
-const RentRooms = {
+const rentRooms = {
   '1': {
     value: 1,
     items: [2],
@@ -81,21 +81,21 @@ const priceInputHandler = ({target}) => {
 };
 
 export const changePriceInputState = () => {
-  priceInput.min = HousingTypes[housingTypeSelect.value];
-  priceInput.placeholder = HousingTypes[housingTypeSelect.value];
+  priceInput.min = housingTypes[housingTypeSelect.value];
+  priceInput.placeholder = housingTypes[housingTypeSelect.value];
 };
 
 export const changeRoomQuantityInputState = () => {
-  if(!RentRooms[roomQuantitySelect.value]) {
+  if(!rentRooms[roomQuantitySelect.value]) {
     roomQuantitySelect.value = 'default';
   }
   guestQuantityOption.forEach((option) => {
     option.disabled = true;
   });
-  RentRooms[roomQuantitySelect.value].items.forEach((item) => {
+  rentRooms[roomQuantitySelect.value].items.forEach((item) => {
     guestQuantityOption[item].disabled = false;
   });
-  guestQuantitySelect.value = RentRooms[roomQuantitySelect.value].value;
+  guestQuantitySelect.value = rentRooms[roomQuantitySelect.value].value;
 };
 
 const housingTypeSelectHandler = () => {

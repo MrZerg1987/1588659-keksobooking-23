@@ -1,4 +1,4 @@
-const HousingTypes = {
+const housingTypes = {
   'flat': 'Квартира',
   'bungalow': 'Бунгало',
   'house': 'Дом',
@@ -74,9 +74,9 @@ export const addCapacityElementTextContent = (rooms, guests, element, selector) 
 };
 
 export const addTypeElementTextContent = (value, element, selector) => {
-  if(!value || !HousingTypes[value]) {
+  if(!value || !housingTypes[value]) {
     element.querySelector(selector).remove();
     return;
   }
-  element.querySelector(selector).textContent = HousingTypes[value];
+  element.querySelector(selector).textContent = housingTypes[value];
 };

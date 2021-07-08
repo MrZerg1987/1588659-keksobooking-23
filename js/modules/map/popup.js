@@ -17,20 +17,20 @@ const popupTemplate = document.querySelector('#card').content.querySelector('.po
 
 export const createSimilarObjectsFragment = ({author, offer}) => {
   const similarObjectsFragment = document.createDocumentFragment();
-  const advertElement = popupTemplate.cloneNode(true);
+  const advertBlock = popupTemplate.cloneNode(true);
 
-  addElementTextContent(offer.title, advertElement, '.popup__title');
-  addElementTextContent(offer.address, advertElement, '.popup__text--address');
-  addElementAdditionalTextContent(offer.price, '₽/ночь', advertElement, '.popup__text--price');
-  addTypeElementTextContent(offer.type, advertElement, '.popup__type');
-  addCapacityElementTextContent(offer.rooms, offer.guests, advertElement, '.popup__text--capacity');
-  addTimeElementTextContent(offer.checkin, offer.checkout, advertElement, '.popup__text--time');
-  addListElementContent(offer.features, advertElement, '.popup__features', createFeatureMarkup);
-  addElementTextContent(offer.description, advertElement, '.popup__description');
-  addListElementContent(offer.photos, advertElement, '.popup__photos', createImgMarkup);
-  addElementSrc(author.avatar, advertElement, '.popup__avatar');
+  addElementTextContent(offer.title, advertBlock, '.popup__title');
+  addElementTextContent(offer.address, advertBlock, '.popup__text--address');
+  addElementAdditionalTextContent(offer.price, '₽/ночь', advertBlock, '.popup__text--price');
+  addTypeElementTextContent(offer.type, advertBlock, '.popup__type');
+  addCapacityElementTextContent(offer.rooms, offer.guests, advertBlock, '.popup__text--capacity');
+  addTimeElementTextContent(offer.checkin, offer.checkout, advertBlock, '.popup__text--time');
+  addListElementContent(offer.features, advertBlock, '.popup__features', createFeatureMarkup);
+  addElementTextContent(offer.description, advertBlock, '.popup__description');
+  addListElementContent(offer.photos, advertBlock, '.popup__photos', createImgMarkup);
+  addElementSrc(author.avatar, advertBlock, '.popup__avatar');
 
-  similarObjectsFragment.appendChild(advertElement);
+  similarObjectsFragment.appendChild(advertBlock);
 
   return similarObjectsFragment;
 };

@@ -1,17 +1,17 @@
 import {setActivateFormState} from '../set-forms-state.js';
 import {initFormValidation, changePriceInputState, changeRoomQuantityInputState} from './form-validation.js';
 import {sendData} from '../api/api-service.js';
-import {onSendSuccess} from '../api-callbacks/on-send-success.js';
-import {onSendError} from '../api-callbacks/on-error-action.js';
+import {sendSuccessHandler} from '../api-callbacks/send-success-handler.js';
+import {sendErrorHandler} from '../api-callbacks/error-action-handler.js';
 import {setPinMarkerStartState} from '../map/map.js';
 import {clearImgBlocks, addChooserInputsListeners} from '../ad-form/load-photo.js';
 
 const addForm = document.querySelector('.ad-form');
 const filter = document.querySelector('.map__filters');
 
-const AddFormSubmitHandler = (evt) => {
+const addFormSubmitHandler = (evt) => {
   evt.preventDefault();
-  sendData(onSendSuccess, onSendError, new FormData(evt.target));
+  sendData(sendSuccessHandler, sendErrorHandler, new FormData(evt.target));
 };
 
 export const resetFilter = () => {
@@ -27,7 +27,7 @@ export const resetAddForm  = () => {
   clearImgBlocks();
 };
 
-const AddFormResetHandler  = () => {
+const addFormResetHandler  = () => {
   setTimeout(() => {
     resetAddForm();
     resetFilter();
@@ -38,6 +38,6 @@ export const activateAdForm = () => {
   setActivateFormState(addForm);
   initFormValidation();
   addChooserInputsListeners();
-  addForm.addEventListener('submit', AddFormSubmitHandler);
-  addForm.addEventListener('reset', AddFormResetHandler);
+  addForm.addEventListener('submit', addFormSubmitHandler);
+  addForm.addEventListener('reset', addFormResetHandler);
 };

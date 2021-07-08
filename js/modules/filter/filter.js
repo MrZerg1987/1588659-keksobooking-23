@@ -8,33 +8,28 @@ const roomsQuantityFilter = filterForm.querySelector('#housing-rooms');
 const guestsQuantityFilter = filterForm.querySelector('#housing-guests');
 const featuresFilter = filterForm.querySelector('#housing-features');
 const PriceTypes = {
-  'low': 10000,
-  'high': 50000,
+  'LOW': 10000,
+  'HIGH': 50000,
 };
 
 let timer;
 
-const getFilterByHousingType = (type) =>
-  (housingTypeFilter.value !== 'any') ? type === housingTypeFilter.value : true;
-
 const getFilterByHousingPrice = (price) => {
   switch (housingPriceFilter.value) {
     case 'low':
-      return price < PriceTypes['low'];
+      return price < PriceTypes['LOW'];
     case 'middle':
-      return price >= PriceTypes['low'] && price <= PriceTypes['high'];
+      return price >= PriceTypes['LOW'] && price <= PriceTypes['HIGH'];
     case 'high':
-      return price > PriceTypes['high'];
+      return price > PriceTypes['HIGH'];
     default:
       return true;
   }
 };
 
-const getFilterByRooms = (rooms) =>
-  roomsQuantityFilter.value === 'any' || rooms === parseInt(roomsQuantityFilter.value, 10);
-
-const getFilterByGuests = (guests) =>
-  (guestsQuantityFilter.value !== 'any') ? guests === parseInt(guestsQuantityFilter.value, 10) : true;
+const getFilterByRooms = (rooms) => roomsQuantityFilter.value === 'any' || rooms === +roomsQuantityFilter.value;
+const getFilterByGuests = (guests) => guestsQuantityFilter.value === 'any' || guests === +guestsQuantityFilter.value;
+const getFilterByHousingType = (type) => housingTypeFilter.value === 'any' || type === housingTypeFilter.value;
 
 const getFilterByFeatures = (features) => {
   if (features) {

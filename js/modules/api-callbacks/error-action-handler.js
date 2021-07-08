@@ -6,14 +6,14 @@ const createErrorMarkup = (text, btnState) => `<div class="error">
                                               </div>`;
 
 
-const ErrorBlockClickHandler = (evt) => {
+const errorBlockClickHandler = (evt) => {
   evt.preventDefault();
   if (evt.target.closest('.error')) {
     closeErrorBlock();
   }
 };
 
-const DocumentKeydownHandler = (evt) => {
+const documentKeydownHandler = (evt) => {
   evt.preventDefault();
   if (isEscEvent(evt)) {
     closeErrorBlock();
@@ -21,22 +21,22 @@ const DocumentKeydownHandler = (evt) => {
 };
 
 const addListeners = () => {
-  document.addEventListener('click', ErrorBlockClickHandler);
-  document.addEventListener('keydown', DocumentKeydownHandler);
+  document.addEventListener('click', errorBlockClickHandler);
+  document.addEventListener('keydown', documentKeydownHandler);
 };
 
 function closeErrorBlock () {
   document.querySelector('.error').remove();
-  document.removeEventListener('keydown', DocumentKeydownHandler);
-  document.removeEventListener('click', ErrorBlockClickHandler);
+  document.removeEventListener('keydown', documentKeydownHandler);
+  document.removeEventListener('click', errorBlockClickHandler);
 }
 
-export const onGetError = () => {
+export const getErrorHandler = () => {
   renderElement(createErrorMarkup('При загрузке данных произошла ошибка!'), document.body);
   addListeners();
 };
 
-export const onSendError = () => {
+export const sendErrorHandler = () => {
   renderElement(createErrorMarkup('Ошибка размещения объявления', true), document.body);
   addListeners();
 };

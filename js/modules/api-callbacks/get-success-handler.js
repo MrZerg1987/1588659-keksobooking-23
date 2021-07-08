@@ -4,7 +4,7 @@ import {setFilterFormChange, setResRanking} from '../filter/filter.js';
 
 const filtersForm = document.querySelector('.map__filters');
 
-export const onGetSuccess = (res) => {
+export const getSuccessHandler = (res) => {
   const rankingRes = setResRanking(res);
   addMarkersGroup(rankingRes);
   setActivateFormState(filtersForm);

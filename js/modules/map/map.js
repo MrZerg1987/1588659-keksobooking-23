@@ -1,7 +1,7 @@
 import {createSimilarObjectsFragment} from './popup.js';
 import {getData} from '../api/api-service.js';
-import {onGetSuccess} from '../api-callbacks/on-get-success.js';
-import {onGetError} from '../api-callbacks/on-error-action.js';
+import {getSuccessHandler} from '../api-callbacks/get-success-handler.js';
+import {getErrorHandler} from '../api-callbacks/error-action-handler.js';
 import {activateAdForm} from '../ad-form/activate-ad-form.js';
 import {filterAdverts} from '../filter/filter.js';
 
@@ -62,7 +62,7 @@ export const initMap = () => {
   mapInteractive
     .on('load', () => {
       activateAdForm();
-      getData(onGetSuccess, onGetError);
+      getData(getSuccessHandler, getErrorHandler);
     })
     .setView(CITY_CENTER, 12);
 

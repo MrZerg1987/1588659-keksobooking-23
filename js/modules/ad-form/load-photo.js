@@ -1,11 +1,11 @@
-const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png', 'webp'];
 const BASE_AVATAR_SRC = 'img/muffin-grey.svg';
 const avatarChooserInput = document.querySelector('.ad-form-header__input');
 const photoChooserInput = document.querySelector('.ad-form__input');
 const photoContainer = document.querySelector('.ad-form__photo');
 const previewImg = document.querySelector('.ad-form-header__preview img');
 
-let imgElement;
+let img;
 
 const loadChangeHandler = (evt) => {
   const file = evt.target.files[0];
@@ -23,13 +23,13 @@ const loadChangeHandler = (evt) => {
           previewImg.src = result;
           break;
         case photoChooserInput:
-          if (!imgElement) {
-            imgElement = document.createElement('img');
-            imgElement.src = result;
-            photoContainer.appendChild(imgElement);
+          if (!img) {
+            img = document.createElement('img');
+            img.src = result;
+            photoContainer.appendChild(img);
             break;
           }
-          imgElement.src = result;
+          img.src = result;
           break;
         default:
           break;

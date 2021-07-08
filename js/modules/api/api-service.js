@@ -1,4 +1,4 @@
-export const getData = (onGetSuccess, onGetError) => {
+export const getData = (getSuccessHandler, getErrorHandler) => {
   fetch('https://23.javascript.pages.academy/keksobooking/data')
     .then((res) => {
       if (res.ok) {
@@ -7,14 +7,14 @@ export const getData = (onGetSuccess, onGetError) => {
       throw new Error();
     })
     .then((data) => {
-      onGetSuccess(data);
+      getSuccessHandler(data);
     })
     .catch(() => {
-      onGetError();
+      getErrorHandler();
     });
 };
 
-export const sendData = (onSendSuccess, onSendError, body) => {
+export const sendData = (sendSuccessHandler, sendErrorHandler, body) => {
   fetch('https://23.javascript.pages.academy/keksobooking',
     {
       method: 'POST',
@@ -23,12 +23,12 @@ export const sendData = (onSendSuccess, onSendError, body) => {
   )
     .then((res) => {
       if (res.ok) {
-        onSendSuccess();
+        sendSuccessHandler();
         return;
       }
       throw new Error();
     })
     .catch(() => {
-      onSendError();
+      sendErrorHandler();
     });
 };

@@ -8,14 +8,14 @@ const createSuccessMarkup = () => `<div class="success">
                                     <p class="success__message">Ваше объявление<br>успешно размещено!</p>
                                   </div>`;
 
-const SuccessBlockClickHandler = (evt) => {
+const successBlockClickHandler = (evt) => {
   evt.preventDefault();
   if (evt.target.closest('.success')) {
     closeSuccessBlock();
   }
 };
 
-const DocumentKeydownHandler = (evt) => {
+const documentKeydownHandler = (evt) => {
   evt.preventDefault();
   if (isEscEvent(evt)) {
     closeSuccessBlock();
@@ -23,17 +23,17 @@ const DocumentKeydownHandler = (evt) => {
 };
 
 const addListeners = () => {
-  document.addEventListener('click', SuccessBlockClickHandler);
-  document.addEventListener('keydown', DocumentKeydownHandler);
+  document.addEventListener('click', successBlockClickHandler);
+  document.addEventListener('keydown', documentKeydownHandler);
 };
 
 function closeSuccessBlock() {
   document.querySelector('.success').remove();
-  document.removeEventListener('keydown', DocumentKeydownHandler);
-  document.removeEventListener('click', SuccessBlockClickHandler);
+  document.removeEventListener('keydown', documentKeydownHandler);
+  document.removeEventListener('click', successBlockClickHandler);
 }
 
-export const onSendSuccess = () => {
+export const sendSuccessHandler = () => {
   renderElement(createSuccessMarkup(), document.body);
   addListeners();
   forms.forEach((form) => form.reset());
