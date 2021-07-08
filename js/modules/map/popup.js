@@ -15,25 +15,22 @@ const createImgMarkup = (elements) => elements.map((el) => `<img src="${el}" cla
 
 const popupTemplate = document.querySelector('#card').content.querySelector('.popup');
 
-export const createSimilarObjectsFragment = (elements) => {
+export const createSimilarObjectsFragment = ({author, offer}) => {
   const similarObjectsFragment = document.createDocumentFragment();
+  const advertElement = popupTemplate.cloneNode(true);
 
-  elements.forEach(({author, offer}) => {
-    const advertElement = popupTemplate.cloneNode(true);
+  addElementTextContent(offer.title, advertElement, '.popup__title');
+  addElementTextContent(offer.address, advertElement, '.popup__text--address');
+  addElementAdditionalTextContent(offer.price, '₽/ночь', advertElement, '.popup__text--price');
+  addTypeElementTextContent(offer.type, advertElement, '.popup__type');
+  addCapacityElementTextContent(offer.rooms, offer.guests, advertElement, '.popup__text--capacity');
+  addTimeElementTextContent(offer.checkin, offer.checkout, advertElement, '.popup__text--time');
+  addListElementContent(offer.features, advertElement, '.popup__features', createFeatureMarkup);
+  addElementTextContent(offer.description, advertElement, '.popup__description');
+  addListElementContent(offer.photos, advertElement, '.popup__photos', createImgMarkup);
+  addElementSrc(author.avatar, advertElement, '.popup__avatar');
 
-    addElementTextContent(offer.title, advertElement, '.popup__title');
-    addElementTextContent(offer.address, advertElement, '.popup__text--address');
-    addElementAdditionalTextContent(offer.price, '₽/ночь', advertElement, '.popup__text--price');
-    addTypeElementTextContent(offer.type, advertElement, '.popup__type');
-    addCapacityElementTextContent(offer.rooms, offer.guests, advertElement, '.popup__text--capacity');
-    addTimeElementTextContent(offer.checkin, offer.checkout, advertElement, '.popup__text--time');
-    addListElementContent(offer.features, advertElement, '.popup__features', createFeatureMarkup);
-    addElementTextContent(offer.description, advertElement, '.popup__description');
-    addListElementContent(offer.photos, advertElement, '.popup__photos', createImgMarkup);
-    addElementSrc(author.avatar, advertElement, '.popup__avatar');
-
-    similarObjectsFragment.appendChild(advertElement);
-  });
+  similarObjectsFragment.appendChild(advertElement);
 
   return similarObjectsFragment;
 };
