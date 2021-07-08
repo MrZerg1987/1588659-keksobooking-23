@@ -3,6 +3,7 @@ import {getData} from '../api/api-service.js';
 import {onGetSuccess} from '../api-callbacks/on-get-success.js';
 import {onGetError} from '../api-callbacks/on-error-action.js';
 import {activateAdForm} from '../ad-form/activate-ad-form.js';
+import {filterAdverts} from '../filter/filter.js';
 
 const ADVERT_COUNTER = 10;
 const CITY_CENTER = {
@@ -13,6 +14,13 @@ const CITY_CENTER = {
 const addressInput = document.querySelector('#address');
 const mapInteractive = L.map('map-canvas');
 let mainPinMarker;
+let markerGroup;
+
+export const removeMarkerGroup = () => {
+  for (const layer in markerGroup._layers) {
+    mapInteractive.removeLayer(markerGroup._layers[layer]);
+  }
+};
 
 export const setPinMarkerStartState = () => {
   mainPinMarker.setLatLng(CITY_CENTER);
@@ -20,38 +28,42 @@ export const setPinMarkerStartState = () => {
 };
 
 export const addMarkersGroup = (arr) => {
-  const markups = createSimilarObjectsFragment(arr);
-  const markerGroup = L.layerGroup().addTo(mapInteractive);
-  arr.slice(0, ADVERT_COUNTER).forEach((el, index) => {
-    const lat = el.location.lat;
-    const lng = el.location.lng;
-    const icon = L.icon({
-      iconUrl: '../img/pin.svg',
-      iconSize: [40, 40],
-      iconAnchor: [20, 40],
-    });
+  markerGroup = L.layerGroup().addTo(mapInteractive);
+  arr
+    .slice()
+    .filter(filterAdverts)
+    .slice(0, ADVERT_COUNTER)
+    .forEach((el) => {
+      const lat = el.location.lat;
+      const lng = el.location.lng;
+      const icon = L.icon({
+        iconUrl: '../img/pin.svg',
+        iconSize: [40, 40],
+        iconAnchor: [20, 40],
+      });
 
-    const marker = L.marker(
-      {
-        lat,
-        lng,
-      },
-      {
-        icon,
-      },
-    );
+      const marker = L.marker(
+        {
+          lat,
+          lng,
+        },
+        {
+          icon,
+        },
+      );
 
-    marker.addTo(markerGroup).bindPopup(markups.childNodes[index], {
-      keepInView: true,
+      marker.addTo(markerGroup).bindPopup(createSimilarObjectsFragment(el), {
+        keepInView: true,
+      });
     });
-  });
 };
 
 export const initMap = () => {
-  mapInteractive.on('load', () => {
-    activateAdForm();
-    getData(onGetSuccess, onGetError);
-  })
+  mapInteractive
+    .on('load', () => {
+      activateAdForm();
+      getData(onGetSuccess, onGetError);
+    })
     .setView(CITY_CENTER, 12);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

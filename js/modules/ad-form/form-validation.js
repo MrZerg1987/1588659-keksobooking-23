@@ -7,7 +7,7 @@ const guestQuantityOption = document.querySelectorAll('#capacity option');
 const timeInSelect = document.querySelector('#timein');
 const timeOutSelect = document.querySelector('#timeout');
 
-const HOUSING_TYPES = {
+const HousingTypes = {
   'bungalow': '0',
   'flat': '1000',
   'hotel': '3000',
@@ -15,7 +15,7 @@ const HOUSING_TYPES = {
   'palace': '10000',
 };
 
-const RENT_ROOMS = {
+const RentRooms = {
   '1': {
     value: 1,
     items: [2],
@@ -80,32 +80,32 @@ const priceInputHandler = ({target}) => {
   target.reportValidity();
 };
 
-const changePriceInputState = (el) => {
-  priceInput.min = HOUSING_TYPES[el.value];
-  priceInput.placeholder = HOUSING_TYPES[el.value];
+export const changePriceInputState = () => {
+  priceInput.min = HousingTypes[housingTypeSelect.value];
+  priceInput.placeholder = HousingTypes[housingTypeSelect.value];
 };
 
-const housingTypeSelectHandler = ({target}) => {
-  changePriceInputState(target);
-  priceInput.setCustomValidity('Изменился диапазон допустимых цен');
-  priceInput.reportValidity();
-};
-
-const changeRoomQuantityInputState = (el) => {
-  if(!RENT_ROOMS[el.value]) {
-    el.value = 'default';
+export const changeRoomQuantityInputState = () => {
+  if(!RentRooms[roomQuantitySelect.value]) {
+    roomQuantitySelect.value = 'default';
   }
   guestQuantityOption.forEach((option) => {
     option.disabled = true;
   });
-  RENT_ROOMS[el.value].items.forEach((item) => {
+  RentRooms[roomQuantitySelect.value].items.forEach((item) => {
     guestQuantityOption[item].disabled = false;
   });
-  guestQuantitySelect.value = RENT_ROOMS[el.value].value;
+  guestQuantitySelect.value = RentRooms[roomQuantitySelect.value].value;
 };
 
-const roomQuantitySelectHandler = ({target}) => {
-  changeRoomQuantityInputState(target);
+const housingTypeSelectHandler = () => {
+  changePriceInputState();
+  priceInput.setCustomValidity('Изменился диапазон допустимых цен');
+  priceInput.reportValidity();
+};
+
+const roomQuantitySelectHandler = () => {
+  changeRoomQuantityInputState();
   guestQuantitySelect.setCustomValidity('Изменились варианты размещения гостей');
   guestQuantitySelect.reportValidity();
 };

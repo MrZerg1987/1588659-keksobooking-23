@@ -1,4 +1,4 @@
-import {isEscEvent, renderElement} from '../utils.js';
+import {isEscEvent, renderElement} from '../../utils/utils.js';
 
 const createErrorMarkup = (text, btnState) => `<div class="error">
                                                 <p class="error__message">${text}</p>
@@ -6,14 +6,14 @@ const createErrorMarkup = (text, btnState) => `<div class="error">
                                               </div>`;
 
 
-const onErrorBlockClick = (evt) => {
+const ErrorBlockClickHandler = (evt) => {
   evt.preventDefault();
   if (evt.target.closest('.error')) {
     closeErrorBlock();
   }
 };
 
-const onDocumentKeydown = (evt) => {
+const DocumentKeydownHandler = (evt) => {
   evt.preventDefault();
   if (isEscEvent(evt)) {
     closeErrorBlock();
@@ -21,14 +21,14 @@ const onDocumentKeydown = (evt) => {
 };
 
 const addListeners = () => {
-  document.addEventListener('click', onErrorBlockClick);
-  document.addEventListener('keydown', onDocumentKeydown);
+  document.addEventListener('click', ErrorBlockClickHandler);
+  document.addEventListener('keydown', DocumentKeydownHandler);
 };
 
 function closeErrorBlock () {
   document.querySelector('.error').remove();
-  document.removeEventListener('keydown', onDocumentKeydown);
-  document.removeEventListener('click', onErrorBlockClick);
+  document.removeEventListener('keydown', DocumentKeydownHandler);
+  document.removeEventListener('click', ErrorBlockClickHandler);
 }
 
 export const onGetError = () => {
