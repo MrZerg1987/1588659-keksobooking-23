@@ -1,5 +1,6 @@
 import {removeMarkerGroup} from '../map/map.js';
 
+const FILTERING_DELAY = 500;
 const filterForm = document.querySelector('.map__filters');
 const housingTypeFilter = filterForm.querySelector('#housing-type');
 const housingPriceFilter = filterForm.querySelector('#housing-price');
@@ -10,7 +11,8 @@ const PriceTypes = {
   'low': 10000,
   'high': 50000,
 };
-const FILTERING_DELAY = 500;
+
+let timer;
 
 const getFilterByHousingType = (type) =>
   (housingTypeFilter.value !== 'any') ? type === housingTypeFilter.value : true;
@@ -37,7 +39,7 @@ const getFilterByGuests = (guests) =>
 const getFilterByFeatures = (features) => {
   if (features) {
     const selectedFeatures = featuresFilter.querySelectorAll('input:checked');
-    return Array.from(selectedFeatures).every((element) => features.includes(element.value));
+    return [...selectedFeatures].every((element) => features.includes(element.value));
   }
   return false;
 };
@@ -61,7 +63,8 @@ export const setResRanking = (res) =>
 
 export const setFilterFormChange = (cb) => {
   filterForm.addEventListener('change', () => {
-    setTimeout(() => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
       removeMarkerGroup();
       cb();
     }, FILTERING_DELAY);

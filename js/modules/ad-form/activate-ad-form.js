@@ -8,8 +8,6 @@ import {clearImgBlocks, addChooserInputsListeners} from '../ad-form/load-photo.j
 
 const addForm = document.querySelector('.ad-form');
 const filter = document.querySelector('.map__filters');
-const filterItems = filter.querySelectorAll('select');
-const featuresItems = filter.querySelectorAll('input');
 
 const AddFormSubmitHandler = (evt) => {
   evt.preventDefault();
@@ -17,8 +15,9 @@ const AddFormSubmitHandler = (evt) => {
 };
 
 export const resetFilter = () => {
-  filterItems.forEach((it) => it.value = 'any');
-  featuresItems.forEach((feature) => feature.checked = false);
+  filter.reset();
+  const event = new Event('change');
+  filter.dispatchEvent(event);
 };
 
 export const resetAddForm  = () => {
