@@ -84,9 +84,9 @@ export const initMap = () => {
     },
   );
 
-  addressInput.value = `LatLng(${mainPinMarker.getLatLng().lat.toFixed(5)}, ${mainPinMarker.getLatLng().lng.toFixed(5)})`;
+  addressInput.value = `${mainPinMarker.getLatLng().lat.toFixed(5)}, ${mainPinMarker.getLatLng().lng.toFixed(5)}`;
 
   mainPinMarker.addTo(mapInteractive).on('move', () => {
-    addressInput.value = `LatLng(${mainPinMarker.getLatLng().lat.toFixed(5)}, ${mainPinMarker.getLatLng().lng.toFixed(5)})`;
+    addressInput.value = `${mainPinMarker.getLatLng().lat.toFixed(5)}, ${mainPinMarker.getLatLng().lng.toFixed(5)}`;
   });
 };
