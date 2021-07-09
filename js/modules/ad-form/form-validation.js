@@ -49,24 +49,12 @@ const titleInputHandler = ({target}) => {
   target.reportValidity();
 };
 
-const changeTimeOutSelect = (el) => {
-  timeInSelect.value = el.value;
-};
-
 const timeOutSelectHandler = ({target}) => {
-  changeTimeOutSelect(target);
-  timeInSelect.setCustomValidity('Изменилось время заезда');
-  timeInSelect.reportValidity();
-};
-
-const changeTimeInSelect = (el) => {
-  timeOutSelect.value = el.value;
+  timeInSelect.value = target.value;
 };
 
 const timeInSelectHandler = ({target}) => {
-  changeTimeInSelect(target);
-  timeOutSelect.setCustomValidity('Изменилось время выезда');
-  timeOutSelect.reportValidity();
+  timeOutSelect.value = target.value;
 };
 
 const priceInputHandler = ({target}) => {
@@ -106,7 +94,6 @@ const housingTypeSelectHandler = () => {
 
 const roomQuantitySelectHandler = () => {
   changeRoomQuantityInputState();
-  guestQuantitySelect.reportValidity();
 };
 
 export const initFormValidation = () => {
